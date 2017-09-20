@@ -15,3 +15,21 @@ Some of our endpoints that don’t pertain to specific user information, such as
 ```javascript 
     https://api.foursquare.com/v2/venues/search?ll=40.7,-74&client_id=CLIENT_ID&client_secret=CLIENT_SECRET&query=pizza&v=YYYYMMDD
 ```
+
+* Requesting From Python Code in `geocode.py`
+  * Enter the python terminal in the vagrant machine with the `geocode.py` file.
+  ```python
+    >>> from geocode import getGeocodeLocation
+    >>> getGeocodeLocation("Dallas, Texas")
+    <!-- save response into a variable named dallas -->
+    >>> dallas = getGeocodeLocation("Dallas, Texas")
+    <!-- see keys of Dallas like a Dict and explore to find lat / long -->
+    >>> dallas.keys 
+    >>> dallas['results']
+    >>> dallas['results'][0]['geometry']['location']['lat']
+  ```
+
+* Some Interesting APIs to Explore
+  * Wikipedia API
+  * StackExchange API
+  * Google Maps API
