@@ -13,6 +13,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 app = Flask(__name__)
 
+# Our URL for users logging and creation
 @app.route('/api/users', methods = ['POST'])
 def new_user():
     username = request.json.get('username')
@@ -22,9 +23,12 @@ def new_user():
     if session.query(User).filter_by(username = username).first() is not None:
         abort(400) # existing user
     user = User(username = username)
+    # hash our password from method in models.py
     user.hash_password(password)
     session.add(user)
+    # written to database
     session.commit()
+    # response body as .json object
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
 
 @app.route('/api/users/<int:id>')
