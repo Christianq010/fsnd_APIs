@@ -7,6 +7,7 @@ import random, string
 from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
 Base = declarative_base()
+# secret key of random 32 character string
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 
 class User(Base):
@@ -21,10 +22,14 @@ class User(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
+	# encrypted version of dict - hides id of user
+	# token has expiration time embedded in it (10 mins - 600 seconds)
     def generate_auth_token(self, expiration=600):
     	s = Serializer(secret_key, expires_in = expiration)
     	return s.dumps({'id': self.id })
 
+	# verification for token implemented here
+	# user will only be known once method is decoded
     @staticmethod
     def verify_auth_token(token):
     	s = Serializer(secret_key)

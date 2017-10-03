@@ -18,10 +18,10 @@ app = Flask(__name__)
 
 
 
-
+# handle our token when the server recieves a token
 @auth.verify_password
 def verify_password(username_or_token, password):
-    #Try to see if it's a token first
+    #Try to see if it's a token first then uses username and password
     user_id = User.verify_auth_token(username_or_token)
     if user_id:
         user = session.query(User).filter_by(id = user_id).one()
@@ -33,7 +33,7 @@ def verify_password(username_or_token, password):
     return True
 
 
-
+# our endpoint for client to request token
 @app.route('/token')
 @auth.login_required
 def get_auth_token():
