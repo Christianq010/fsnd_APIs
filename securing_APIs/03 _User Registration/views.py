@@ -13,7 +13,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 app = Flask(__name__)
 
-# Our URL for users logging and creation
+# Our URL for users logging and creation using POST request
 @app.route('/api/users', methods = ['POST'])
 def new_user():
     username = request.json.get('username')

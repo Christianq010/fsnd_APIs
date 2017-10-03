@@ -4,7 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
-from flask.ext.httpauth import HTTPBasicAuth
+# Provides basic HTTP authentication for flask routes
+from flask_httpauth  import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
 
@@ -15,11 +16,13 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 app = Flask(__name__)
 
+# further info for out HTTP Auth, returns true or false on validation
 @auth.verify_password
 def verify_password(username, password):
     user = session.query(User).filter_by(username = username).first()
     if not user or not user.verify_password(password):
         return False
+    # store user in flasks g object
     g.user = user
     return True
 
@@ -51,6 +54,7 @@ def get_user(id):
     return jsonify({'username': user.username})
 
 @app.route('/api/resource')
+# add this decorator below to protect the HTTP route
 @auth.login_required
 def get_resource():
     return jsonify({ 'data': 'Hello, %s!' % g.user.username })
