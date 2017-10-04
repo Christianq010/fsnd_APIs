@@ -1,3 +1,4 @@
+# redis already installed on vagrant, limits server requests
 from redis import Redis
 redis = Redis()
 
@@ -64,6 +65,7 @@ def inject_x_rate_headers(response):
         h.add('X-RateLimit-Reset', str(limit.reset))
     return response
 
+# set out rate limit, 300 requests every 30 seconds at max
 @app.route('/rate-limited')
 @ratelimit(limit=300, per=30 * 1)
 def index():
