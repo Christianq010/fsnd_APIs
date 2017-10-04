@@ -43,10 +43,12 @@ def verify_password(username_or_token, password):
     g.user = user
     return True
 
+# display the one time auth code after signing into Google
 @app.route('/clientOAuth')
 def start():
     return render_template('clientOAuth.html')
 
+# endpoint for our oAuth provider
 @app.route('/oauth/<provider>', methods = ['POST'])
 def login(provider):
     #STEP 1 - Parse the auth code
@@ -95,6 +97,8 @@ def login(provider):
         #     return response
         print "Step 2 Complete! Access Token : %s " % credentials.access_token
 
+        # Once we successfully recieve an access token from google
+        # We can send an API request to Google to get our Users Info
         #STEP 3 - Find User or make a new one
         
         #Get user info

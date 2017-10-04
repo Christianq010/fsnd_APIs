@@ -9,6 +9,7 @@ from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSigna
 Base = declarative_base()
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 
+# some of the profile info from google, got from our token
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
